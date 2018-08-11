@@ -9,6 +9,7 @@
   "author": "Olga Serenchenko",
   "license": "ISC",
   "dependencies": {
+    "easy-table": "^1.1.1",
     "inquirer": "^6.1.0",
     "mysql": "^2.16.0"
   }
