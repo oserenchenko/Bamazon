@@ -25,6 +25,7 @@ function start() {
   inquirer
   .prompt ([{
     type: "list",
+    name: "options",
     message: "What would you like to do?",
     choices: ["View Product Sales by Department", "Create New Department"]
   }]).then(function(answers) {
