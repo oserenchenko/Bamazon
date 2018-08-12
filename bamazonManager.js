@@ -44,7 +44,7 @@ function viewProducts() {
       t.newRow()
     })
     console.log(t.toString())
-    start();
+    exit();
   })
 }
 
@@ -70,7 +70,7 @@ function viewInventory() {
       t.newRow()
     })
     console.log(t.toString())
-    start();
+    exit();
   })
 }
 
@@ -108,7 +108,7 @@ function addInventory() {
               connection.query("UPDATE products SET stock_quantity = ? WHERE product_name = ?", [amount, itemToAddTo], function (err, res) {
                 if (err) throw err;
                 console.log("Updated the inventory.");
-                start();
+                exit();
               })
             })
         })
@@ -117,7 +117,7 @@ function addInventory() {
 }
 
 function addProduct() {
-  connection.query("SELECT DISTINCT department_name FROM products", function (err, res) {
+  connection.query("SELECT department_name FROM departments", function (err, res) {
     if (err) throw err;
     var departments = [];
     for (var i = 0; i < res.length; i++) {
@@ -164,10 +164,25 @@ function addProduct() {
         connection.query("INSERT INTO products SET ?", newProduct, function (err, res) {
           if (err) throw err;
           console.log("Added new item to products.");
-          start();
+          exit();
         })
       })
   })
+}
+
+function exit() {
+  inquirer
+    .prompt([{
+      type: "confirm",
+      name: "exit",
+      message: "Would you like to exit?"
+    }]).then(function (answers) {
+      if (answers.exit) {
+        connection.end();
+      } else {
+        start();
+      }
+    })
 }
 
 function start() {

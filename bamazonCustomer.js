@@ -26,13 +26,13 @@ function displayProducts() {
   var data = [];
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
+    var amountProducts = res.length;
     console.log("These products are available for sale:")
     for (var i = 0; i < res.length; i++) {
       data.push({
         item_id: res[i].item_id,
         product_name: res[i].product_name,
-        price: res[i].price,
-        product_sales: res[i].product_sales
+        price: res[i].price
       })
     }
     var t = new Table
@@ -40,22 +40,21 @@ function displayProducts() {
       t.cell('Item ID', product.item_id)
       t.cell('Product Name', product.product_name)
       t.cell('Price', product.price, Table.number(2))
-      t.cell('Total Cost', product.product_sales)
       t.newRow()
     })
     console.log(t.toString())
-    purchase();
+    purchase(amountProducts);
   })
 }
 
-function purchase() {
+function purchase(numOfProd) {
   inquirer
     .prompt([{
       type: "input",
       name: "itemID",
       message: "Please input the Item ID of the product you would like to purchase.",
       validate: function (value) {
-        if (isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <= 10) {
+        if (isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <= numOfProd) {
           return true;
         }
         return false;
@@ -81,13 +80,25 @@ function purchase() {
                 var updateCost = res[0].product_sales + totalCost;
                 connection.query("UPDATE products SET product_sales = ? WHERE item_id = ?", [updateCost, answers.itemID], function (err, res) {
                   if (err) throw err;
-                  connection.end();
+                  inquirer
+                    .prompt([{
+                      type: "confirm",
+                      name: "exit",
+                      message: "Would you like to exit?"
+                    }]).then(function (answers) {
+                      if (answers.exit) {
+                        connection.end();
+                      } else {
+                        displayProducts();
+                      }
+                    })
                 })
               });
             })
           })
         } else {
           console.log("Sorry, insufficient quantity!")
+          displayProducts();
         }
       })
     })
