@@ -157,7 +157,7 @@ function addProduct() {
         var newProduct = {
           product_name: answers.newItem,
           department_name: answers.newDepartment,
-          price: parseInt(answers.newPrice),
+          price: parseFloat(answers.newPrice),
           stock_quantity: parseInt(answers.newInventory),
           product_sales: 0.00
         }
