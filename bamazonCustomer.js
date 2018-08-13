@@ -18,7 +18,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
   if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
+  // console.log("connected as id " + connection.threadId + "\n");
   displayProducts();
 });
 
@@ -74,7 +74,8 @@ function purchase(numOfProd) {
             connection.query("Select price FROM products WHERE item_id = ?", [answers.itemID], function (err, res) {
               if (err) throw err;
               var totalCost = answers.units * res[0].price;
-              console.log("Order submitted. Your total cost is $" + totalCost);
+              var totalCostFixed = parseFloat(totalCost.toFixed(2));
+              console.log("Order submitted. Your total cost is $" + totalCostFixed);
               connection.query("Select product_sales FROM products WHERE item_id = ?", [answers.itemID], function (err, res) {
                 if (err) throw err;
                 var updateCost = res[0].product_sales + totalCost;
