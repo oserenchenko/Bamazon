@@ -30,4 +30,7 @@ VALUES ("Electronics", 700), ("Furniture", 550), ("Accessories", 225), ("Clothin
 ALTER TABLE products
 ADD product_sales DECIMAL(50,2) NOT NULL;
 
+SELECT * FROM products;
+
+
 
