@@ -16,7 +16,7 @@ ______________
 ______________
 ______________
 
-![homepage]()
+![bamazon_manager_view](bamazon.gif)
 
 ## View full video walkthroughs or screenshots of the CLI app:
 Video Walk-Throughs: 
